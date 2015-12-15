@@ -1,12 +1,55 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hello World!</title>
+    <title>CMS Editor</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <h1>www.reifen.com</h1>
+	<div class="indicator" >
+    
+  </div>
+ <div id="content" ></div>
+ 	 <script>require('./app.js')</script>
+    
+    <div id="enableCms" >Enable CMS</div>
+  <webview id="cmsWebview" src="http:///www.reifen.com" 
+   preload="./browser.js"
+  style="height:100vh;display: flex;"></webview>
+  
+  
+   <script>
+ onload = function() {
+   
+    var enableCms = document.getElementById("enableCms");
+    var webview = document.getElementById("cmsWebview");
+    var indicator = document.querySelector(".indicator");
+
+    enableCms.addEventListener("click", function (e) {
+      webview.src = "http:///www.reifen.com/de/cms/enablecms";
+    });
+    
+    webview.addEventListener("ipc-message", function (e) {
+      if (e.channel === "window-data") {
+        console.log(e.args[0]);
+        indicator.innerText = "ipc-message window-data";
+      }
+    
+      if (e.channel === "mouseover-href") {
+        indicator.innerText = "ipc-message mouseover-href" + e.args[0];
+      }
+    });
+    
+
+    var loadstart = function() {
+      indicator.innerText = "loading...";
+    }
+    var loadstop = function() {
+      indicator.innerText = "...finished loading";
+      
+    }
+    webview.addEventListener("did-start-loading", loadstart);
+    webview.addEventListener("did-stop-loading", loadstop);
+  }
+ </script>
   </body>
 </html>
