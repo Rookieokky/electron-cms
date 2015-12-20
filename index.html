@@ -50,20 +50,38 @@
 
  	 <script>require('./app.js')</script>
     
- 
-  
   
    <script>
+     var markedCms = false;
  onload = function() {
    
     var enableCms = document.getElementById("enableCms");
     var webview = document.getElementById("cmsWebview");
     var indicator = document.getElementById("indicator");
-
+    var markCmsItems = document.getElementById("markCmsItems");
+    
+  
     enableCms.addEventListener("click", function (e) {
       webview.src = "http:///www.reifen.com/de/cms/enablecms";
     });
+   
+   
+    markCmsItems.addEventListener("click", function (e) {
+      webview.insertCSS('.cmsActive{border-style:solid;border-width:1px;border-color:#f00;}');
+      if(markedCms)
+      {
+        webview.executeJavaScript('$(.cmsItem).addClass("cmsActive")');
+        markedCms = false;
+      }
+      else
+      {
+        webview.executeJavaScript('$(.cmsItem).removeClass("cmsActive")');
+        markedCms = false;
+      }
     
+    });
+ 
+
     webview.addEventListener("ipc-message", function (e) {
       if (e.channel === "window-data") {
         console.log(e.args[0]);
@@ -85,6 +103,14 @@
     }
     webview.addEventListener("did-start-loading", loadstart);
     webview.addEventListener("did-stop-loading", loadstop);
+    webview.addEventListener('loadcommit', function() {
+    /*
+    webview.insertCSS({
+      code: '#tbnCart { color: red !important; }',
+      runAt: 'document_start'
+    });*/
+  });
+    
   }
  </script>
   </body>

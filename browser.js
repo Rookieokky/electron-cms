@@ -6,11 +6,14 @@ document.addEventListener("mouseover", function (e) {
   if (hoveredEl.tagName !== "A") {
     return;
   }
-  
-  ipc.sendToHost("mouseover-href", hoveredEl.href);
+  /*
+  $('.cmsItem').css("border-style","solid");
+  $('.cmsItem').css("border-width","1px");
+  $('.cmsItem').css("border-color","#f00");*/
+  //ipc.sendToHost("mouseover-href", hoveredEl.href +  $('.cmsItem').css("display","block"); );
 });
 
- $('.cmsItem').addClass('active');
+
 
 document.addEventListener("DOMContentLoaded", function () {
   var data = {
